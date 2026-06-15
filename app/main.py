@@ -65,7 +65,20 @@ def predict(user: UserFeatures):
     prediction = model.predict(input_data)[0]
     probability = model.predict_proba(input_data)[0][1]
 
+
+    if probability >= 0.75:
+        recommendation = "High churn risk. Trigger immediate re-engagement campaign with a time-limited discount offer."
+    elif probability >= 0.5:
+        recommendation = "Moderate churn risk. Send a personalized product recommendation email to re-activate interest."
+    elif probability >= 0.25:
+        recommendation = "Low churn risk. Enroll user in loyalty program to reinforce engagement."
+    else:
+        recommendation = "User is active and healthy. No intervention needed at this time."
+
     return {
         "churned": bool(prediction),
-        "churn_probability": round(float(probability), 3)
+        "churn_probability": round(float(probability), 3),
+        "recommendation": recommendation 
     }
+
+
